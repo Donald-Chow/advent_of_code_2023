@@ -36,6 +36,28 @@ def check_and_sum(data)
   end
 end
 
+def add_power(game)
+  min_blue = 0
+  min_red = 0
+  min_green = 0
+  game[:results].each do |result|
+    min_blue = result[:blue] if min_blue < result[:blue]
+    min_red = result[:red] if min_red < result[:red]
+    min_green = result[:green] if min_green < result[:green]
+  end
+  game[:power] = (min_blue * min_red * min_green)
+  game
+end
+
+def sum_power(input_with_power)
+  input_with_power.inject(0) { |sum, game| sum + game[:power]}
+end
+
+def part_two(input)
+  data = parse_game(input)
+  sum_power(data.map { |game| add_power(game) })
+end
+
 # ==============================
 input = "Game 1: 3 blue, 7 green, 10 red; 4 green, 4 red; 1 green, 7 blue, 5 red; 8 blue, 10 red; 7 blue, 19 red, 1 green
 Game 2: 6 red, 10 green; 11 green, 4 red; 16 green, 2 blue; 7 green, 5 blue, 4 red; 17 green, 1 red, 1 blue
@@ -139,3 +161,5 @@ Game 99: 3 green, 7 red, 4 blue; 9 red, 13 blue, 2 green; 3 red, 2 green, 11 blu
 Game 100: 9 green, 7 blue; 1 green, 3 red, 4 blue; 15 red, 9 green; 3 blue, 6 red, 13 green; 2 red, 11 blue, 12 green"
 
 p check_possibility(input)
+
+p part_two(input)
